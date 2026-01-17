@@ -1,0 +1,209 @@
+:root {
+    --bg-color: var(--vscode-editor-background);
+    --text-color: var(--vscode-editor-foreground);
+    --accent-color: var(--vscode-editor-focusBorder, #8b5cf6);
+    --accent-glow-color: var(--accent-color);
+    --wheel-border: var(--vscode-editorWidget-border, rgba(128, 128, 128, 0.15));
+    --glass-bg: var(--vscode-editorWidget-background, rgba(255, 255, 255, 0.02));
+    --input-bg: var(--vscode-input-background, rgba(255, 255, 255, 0.02));
+    --input-foreground: var(--vscode-input-foreground, var(--text-color));
+    --button-bg: var(--vscode-button-background, #3b82f6);
+    --button-foreground: var(--vscode-button-foreground, #ffffff);
+    --button-hover: var(--vscode-button-hoverBackground, var(--button-bg));
+    --result-color: var(--vscode-terminal-ansiGreen, #22c55e);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px;
+}
+
+.container {
+    width: 100%;
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px
+}
+
+.input-area {
+    width: 100%
+}
+
+textarea#wheel-options {
+    width: 100%;
+    min-height: 60px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--accent-color);
+    background: var(--input-bg);
+    color: var(--input-foreground);
+    resize: none;
+    outline: none;
+    transition: box-shadow .15s, border-color .15s
+}
+
+textarea#wheel-options:focus {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12)
+}
+
+.validation-msg {
+    font-size: 0.9rem;
+    height: 18px;
+    margin-top: 6px;
+    opacity: 0;
+    color: var(--text-color);
+    transition: opacity .15s
+}
+
+.validation-msg.error {
+    opacity: 1
+}
+
+.wheel-container {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 8px solid white;
+    background: var(--bg-color);
+    position: relative;
+    transition: transform 5s cubic-bezier(.25, .1, .25, 1)
+}
+
+.wheel-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative
+}
+
+.label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0% 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+    width: 50%;
+    height: 1px;
+    text-align: right
+}
+
+.label span {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-color);
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.center-circle {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    border: 4px solid var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10
+}
+
+.center-circle::after {
+    content: '★';
+    font-size: 1.4rem;
+    color: var(--accent-color)
+}
+
+.pointer {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 36px solid white;
+    z-index: 20
+}
+
+.spin-button {
+    padding: 12px 36px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--button-foreground);
+    background: var(--button-bg);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transition: transform .12s, box-shadow .12s
+}
+
+.spin-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16)
+}
+
+.spin-button:disabled {
+    opacity: .55;
+    cursor: not-allowed
+}
+
+.result-display {
+    margin-top: 8px;
+    font-size: 1.75rem;
+    font-weight: 700;
+    min-height: 3rem;
+    text-align: center;
+    color: var(--result-color);
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all .25s
+}
+
+.result-display.show {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+@media (max-width:420px) {
+    .wheel-container {
+        width: 280px;
+        height: 280px
+    }
+}

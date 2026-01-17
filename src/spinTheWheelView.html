@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin The Wheel</title>
+    <link href="{{styleUri}}" rel="stylesheet">
+</head>
+
+<body>
+    <main class="container">
+        <div class="input-area">
+            <textarea id="wheel-options" rows="3"
+                placeholder="Enter options, separated by commas (e.g. Apple, Banana, Cherry)"></textarea>
+            <div id="validation-msg" class="validation-msg">Min 2, Max 20 options</div>
+        </div>
+
+        <div class="wheel-container">
+            <div class="pointer" aria-hidden="true"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-inner"></div>
+            </div>
+            <div class="center-circle" aria-hidden="true"></div>
+        </div>
+
+        <button id="spin-btn" class="spin-button">SPIN</button>
+
+        <div id="result-display" class="result-display" aria-live="polite"></div>
+    </main>
+
+    <script src="{{scriptUri}}"></script>
+</body>
+
+</html>

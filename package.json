@@ -1,0 +1,55 @@
+{
+  "name": "spin-the-wheel-viewer",
+  "displayName": "Spin the wheel viewer",
+  "description": "A VSCode extension that provides a spin the wheel viewer in the activity bar.",
+  "version": "0.0.1",
+  "publisher": "Barakadax",
+  "repository": "",
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "Visualization", "Testing", "Debuggers", "Education", "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "spin-the-wheel-container",
+          "title": "Spin the Wheel",
+          "icon": "icon.png"
+        }
+      ]
+    },
+    "views": {
+      "spin-the-wheel-container": [
+        {
+          "type": "webview",
+          "icon": "icon.png",
+          "id": "spinTheWheelViewer",
+          "name": ""
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.108.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "25.x",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
