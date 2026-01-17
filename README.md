@@ -23,6 +23,11 @@ A VS Code extension that adds a fun, interactive "Spin the Wheel" visualization 
 4.  Click the **SPIN** button!
 5.  Watch the wheel rotate and wait for the result to appear.
 
+## How to compile for VS Code market
+```shell
+vsce package
+```
+
 ## Extension Settings
 
 This extension currently does not provide global settings via `settings.json`. All configuration is done directly within the view's input field for quick, ephemeral decision making.
