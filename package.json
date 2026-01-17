@@ -2,8 +2,10 @@
   "name": "barakadax-spin-the-wheel",
   "displayName": "Spin the wheel",
   "description": "A VSCode extension that provides a spin the wheel in the activity bar.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "Barakadax",
+  "icon": "icon_128.png",
+  "license": "AGPL-3.0",
   "repository": "https://github.com/barakadax/SpinTheWheelVSCodeExtension",
   "engines": {
     "vscode": "^1.108.1"

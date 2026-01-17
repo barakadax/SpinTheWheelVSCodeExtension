@@ -43,6 +43,19 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 		htmlContent = htmlContent.replace('{{scriptUri}}', scriptUri.toString());
 
 		webviewView.webview.html = htmlContent;
+
+		// Handle messages from the webview (e.g. spin result)
+		webviewView.webview.onDidReceiveMessage(async (message: any) => {
+			if (message.command === 'spinResult') {
+				const result = message.result;
+				if (!result) {
+					vscode.window.showInformationMessage('Wheel returned no result.');
+					return;
+				}
+
+				// When possible insert `result` in the copilot ai chat
+			}
+		});
 	}
 }
 

@@ -34,4 +34,4 @@ This extension currently does not provide global settings via `settings.json`. A
 
 ## Requirements
 
-- VS Code version 1.101.0 or higher.
+- VS Code version 1.108.1 or higher.
