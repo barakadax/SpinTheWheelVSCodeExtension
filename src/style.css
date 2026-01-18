@@ -48,7 +48,11 @@ body {
     width: 100%
 }
 
-textarea#wheel-options {
+#options-title {
+    margin-top: -30px;
+}
+
+textarea#wheel-options, textarea#command-area {
     width: 100%;
     min-height: 60px;
     padding: 12px;
@@ -58,7 +62,8 @@ textarea#wheel-options {
     color: var(--input-foreground);
     resize: none;
     outline: none;
-    transition: box-shadow .15s, border-color .15s
+    transition: box-shadow .15s, border-color .15s;
+    margin-top: -45px;
 }
 
 textarea#wheel-options:focus {
@@ -84,7 +89,8 @@ textarea#wheel-options:focus {
     height: 340px;
     display: flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    margin-top: -20px;
 }
 
 .wheel {
@@ -170,7 +176,8 @@ textarea#wheel-options:focus {
     border-radius: 40px;
     cursor: pointer;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-    transition: transform .12s, box-shadow .12s
+    transition: transform .12s, box-shadow .12s;
+    margin-top: -25px;
 }
 
 .spin-button:hover {
@@ -184,7 +191,7 @@ textarea#wheel-options:focus {
 }
 
 .result-display {
-    margin-top: 8px;
+    margin-top: -30px;
     font-size: 1.75rem;
     font-weight: 700;
     min-height: 3rem;

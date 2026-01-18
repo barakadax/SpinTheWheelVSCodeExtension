@@ -48,16 +48,61 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 		webviewView.webview.onDidReceiveMessage(async (message: any) => {
 			if (message.command === 'spinResult') {
 				const result = message.result;
-				if (!result) {
-					vscode.window.showInformationMessage('Wheel returned no result.');
-					return;
-				}
+				const commandText = message.commandText;
+				let queryToSend = '';
 
-				// When possible insert `result` in the copilot ai chat
+				if (typeof result === 'string' && result.trim().length > 0) {
+					if (typeof commandText === 'string' && commandText.trim().length > 0 && commandText.includes('{{res}}')) {
+						queryToSend = commandText.replace(/{{res}}/g, result);
+					}
+					else {
+						queryToSend = result;
+					}
+
+					const clineExtension = vscode.extensions.getExtension('saoudrizwan.claude-dev');
+					if (clineExtension) {
+						const sentToCline = await this.sendQueryToCline(queryToSend);
+						if (sentToCline) {
+							vscode.window.showInformationMessage("Spin result sent to CLine!");
+						}
+					}
+
+					const sentToCopilot = await this.sendQueryToCopilot(queryToSend);
+					if (sentToCopilot) {
+						vscode.window.showInformationMessage("Spin result sent to Copilot!");
+					}
+				}
 			}
 		});
 	}
+
+	private async sendQueryToCopilot(query: string): Promise<boolean> {
+		try {
+			await vscode.commands.executeCommand('workbench.action.chat.open', {
+				query: query,
+				isPartialQuery: true
+			});
+		} catch (error) {
+			console.error('Error sending query to AI chat:', error);
+			vscode.window.showInformationMessage("Error happened while sending to AI chat");
+			return false;
+		}
+
+		return true;
+	}
+
+	private async sendQueryToCline(query: string): Promise<boolean> {
+		try {
+			await vscode.commands.executeCommand('cline.addPromptToChat', query);
+			await vscode.commands.executeCommand('cline.SidebarProvider.focus');
+		} catch (error) {
+			console.error('Error sending query to Cline:', error);
+			vscode.window.showInformationMessage("Error happened while sending to Cline");
+			return false;
+		}
+
+		return true;
+	}
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() { }

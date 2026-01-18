@@ -6,6 +6,7 @@
     const wheelInner = document.querySelector('.wheel-inner');
     const resultDisplay = document.getElementById('result-display');
     const wheelOptionsInput = document.getElementById('wheel-options');
+    const commandArea = document.getElementById('command-area');
     const validationMsg = document.getElementById('validation-msg');
 
     let options = [];
@@ -19,14 +20,15 @@
         let hue;
         let attempts = 0;
         let isDistinct = false;
+        const minDiff = 35;
 
-        while (!isDistinct && attempts < 50) {
+        while (!isDistinct && attempts < 200) {
             hue = Math.floor(Math.random() * 360);
 
             const conflict = usedHues.some(usedHue => {
                 const diff = Math.abs(hue - usedHue);
                 const wrappedDiff = Math.min(diff, 360 - diff);
-                return wrappedDiff < 30;
+                return wrappedDiff < minDiff;
             });
 
             if (!conflict) {
@@ -34,6 +36,8 @@
             }
             attempts++;
         }
+
+        if (hue === undefined) hue = Math.floor(Math.random() * 360);
 
         return `hsl(${hue}, 85%, 55%)`;
     }
@@ -69,15 +73,19 @@
 
         setValidationState(true);
 
-        const newOptions = inputValues.map(label => {
-            const existing = options.find(p => p.label === label);
+        const newOptions = [];
+        const pool = options.slice();
+
+        inputValues.forEach(label => {
+            const existing = pool.find(p => p.label === label);
             if (existing) {
-                return existing;
+                newOptions.push(existing);
+            } else {
+                const color = generateColor(pool);
+                const opt = { label: label, color };
+                newOptions.push(opt);
+                pool.push(opt);
             }
-            return {
-                label: label,
-                color: generateColor(options)
-            };
         });
 
         options = newOptions;
@@ -154,8 +162,11 @@
             spinBtn.disabled = false;
             wheelOptionsInput.disabled = false;
 
-            // send result to extension host (optional)
-            vscode.postMessage({ command: 'spinResult', result: wonOption ? wonOption.label : null });
+            vscode.postMessage({
+                command: 'spinResult',
+                result: wonOption ? wonOption.label : null,
+                commandText: commandArea ? commandArea.value : null
+            });
         }, 5000);
     }
 
