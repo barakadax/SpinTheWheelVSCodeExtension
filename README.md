@@ -24,6 +24,12 @@ A lightweight VS Code extension that adds an interactive "Spin the Wheel" to the
 - The result display uses an accessible live region so screen readers receive the winner announcement.
 - If you supply a command template containing `{{res}}`, that placeholder will be replaced with the winning option before sending.
 
+## Extension Settings
+
+This extension contributes the following setting:
+
+- `spinTheWheel.enableConfetti`: Toggle the big celebration screen with falling canvas confetti in the center of the editor (default: `true`).
+
 ## Development & Packaging
 
 - Build/compile TypeScript for publishing or local testing:
@@ -36,6 +42,12 @@ npm run compile
 
 ```bash
 vsce package
+```
+
+Or for Windows users:
+
+```cmd
+npx vsce package
 ```
 
 - Run the extension in the Extension Development Host from VS Code (press `F5`).

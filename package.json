@@ -2,7 +2,7 @@
   "name": "barakadax-spin-the-wheel",
   "displayName": "Spin the wheel",
   "description": "A VSCode extension that provides a spin the wheel in the activity bar.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "AGPL-3.0",
   "publisher": "Barakadax",
   "icon": "icon_128.png",
@@ -44,6 +44,16 @@
           "name": ""
         }
       ]
+    },
+    "configuration": {
+      "title": "Spin the Wheel",
+      "properties": {
+        "spinTheWheel.enableConfetti": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a big winning screen with confetti in the center of the editor when an option is selected."
+        }
+      }
     }
   },
   "scripts": {
@@ -57,7 +67,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "25.x",
-    "@types/vscode": "^1.120.0",
+    "@types/vscode": "^1.108.1",
     "@typescript-eslint/eslint-plugin": "^8.60.1",
     "@typescript-eslint/parser": "^8.60.1",
     "@vscode/test-cli": "^0.0.11",

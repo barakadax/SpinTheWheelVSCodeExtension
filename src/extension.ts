@@ -59,6 +59,12 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 						queryToSend = result;
 					}
 
+					const config = vscode.workspace.getConfiguration('spinTheWheel');
+					const enableConfetti = config.get<boolean>('enableConfetti', true);
+					if (enableConfetti) {
+						this.showConfettiPanel(result);
+					}
+
 					const claudeExtension = vscode.extensions.getExtension('anthropic.claude-code') || vscode.extensions.getExtension('anthropic.claude');
 					if (claudeExtension) {
 						const sentToClaude = await this.sendQueryToClaude(queryToSend);
@@ -127,6 +133,51 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 		}
 
 		return true;
+	}
+
+	private async showConfettiPanel(winner: string) {
+		const panel = vscode.window.createWebviewPanel(
+			'spinTheWheelWinner',
+			'Spin Winner!',
+			vscode.ViewColumn.Active,
+			{
+				enableScripts: true,
+				localResourceRoots: [this.extensionUri]
+			}
+		);
+
+		let isDisposed = false;
+		panel.onDidDispose(() => {
+			isDisposed = true;
+		});
+
+		try {
+			// Load celebration HTML file
+			const htmlUri = vscode.Uri.joinPath(this.extensionUri, 'src', 'winnerCelebration.html');
+			const htmlBytes = await vscode.workspace.fs.readFile(htmlUri);
+			let htmlContent = Buffer.from(htmlBytes).toString('utf8');
+
+			// Resolve CSS style sheet path as webview URI
+			const styleUri = panel.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'src', 'winnerCelebration.css'));
+
+			// Inject CSP and replace placeholders
+			const csp = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${panel.webview.cspSource} 'unsafe-inline'; script-src ${panel.webview.cspSource} 'unsafe-inline';">`;
+			htmlContent = htmlContent.replace('<head>', `<head>\n\t\t${csp}`);
+			htmlContent = htmlContent.replace('{{styleUri}}', styleUri.toString());
+			htmlContent = htmlContent.replace('{{winner}}', winner);
+
+			panel.webview.html = htmlContent;
+		} catch (error) {
+			console.error('Failed to load celebration templates:', error);
+			// Fallback plain content if file loading fails
+			panel.webview.html = `<h1>Winner: ${winner}</h1>`;
+		}
+
+		setTimeout(() => {
+			if (!isDisposed) {
+				panel.dispose();
+			}
+		}, 3000);
 	}
 }
 
