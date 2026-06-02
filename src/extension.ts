@@ -59,6 +59,14 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 						queryToSend = result;
 					}
 
+					const claudeExtension = vscode.extensions.getExtension('anthropic.claude-code') || vscode.extensions.getExtension('anthropic.claude');
+					if (claudeExtension) {
+						const sentToClaude = await this.sendQueryToClaude(queryToSend);
+						if (sentToClaude) {
+							vscode.window.showInformationMessage("Spin result sent to Claude!");
+						}
+					}
+
 					const clineExtension = vscode.extensions.getExtension('saoudrizwan.claude-dev');
 					if (clineExtension) {
 						const sentToCline = await this.sendQueryToCline(queryToSend);
@@ -99,6 +107,23 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 			console.error('Error sending query to Cline:', error);
 			vscode.window.showInformationMessage("Error happened while sending to Cline");
 			return false;
+		}
+
+		return true;
+	}
+
+	private async sendQueryToClaude(query: string): Promise<boolean> {
+		try {
+			await vscode.commands.executeCommand('claude-vscode.ask', query);
+		} catch (error) {
+			try {
+				await vscode.commands.executeCommand('claude-vscode.sidebar.open');
+				await vscode.commands.executeCommand('claude-vscode.focus');
+			} catch (fallbackError) {
+				console.error('Error sending query to Claude:', error, fallbackError);
+				vscode.window.showInformationMessage("Error happened while sending to Claude");
+				return false;
+			}
 		}
 
 		return true;

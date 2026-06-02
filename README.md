@@ -14,7 +14,7 @@ A lightweight VS Code extension that adds an interactive "Spin the Wheel" to the
 
 1. Click the Spin the Wheel icon in the Activity Bar.
 2. In the options field, enter items separated by commas (e.g. Alice, Bob, Charlie). Duplicates are removed automatically.
-3. Optionally enter an AI sentence in the top input and use `{{res}}` as a placeholder — it will be replaced with the winner before sending to the AI chat or Cline.
+3. Optionally enter an AI sentence in the top input and use `{{res}}` as a placeholder — it will be replaced with the winner before sending to the Copilot, Claude or Cline.
 4. Click the **SPIN** button. The wheel spins, the winner is shown, and a message is posted to the editor view which will:
    - Open the built-in AI chat with the query.
    - Add the query to the Claude Dev extension chat if that extension is installed.
