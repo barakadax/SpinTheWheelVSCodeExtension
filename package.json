@@ -2,11 +2,13 @@
   "name": "barakadax-spin-the-wheel",
   "displayName": "Spin the wheel",
   "description": "A VSCode extension that provides a spin the wheel in the activity bar.",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "license": "AGPL-3.0",
   "publisher": "Barakadax",
   "icon": "icon_128.png",
   "repository": "https://github.com/barakadax/SpinTheWheelVSCodeExtension",
+  "author": { "name": "Barak Taya" },
+  "homepage": "https://barakadax.github.io/",
   "engines": {
     "vscode": "^1.108.1"
   },
@@ -52,6 +54,33 @@
           "type": "boolean",
           "default": true,
           "description": "Show a big winning screen with confetti in the center of the editor when an option is selected."
+        },
+        "spinTheWheel.confettiScreenCloseTimeout": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "markdownDescription": "Timeout in seconds before the confetti celebration window is closed automatically. If set to `null`, `0`, or not defined, the window will remain open."
+        },
+        "spinTheWheel.targetAI": {
+          "type": "string",
+          "default": "copilot",
+          "enum": [
+            "copilot",
+            "cline",
+            "claude",
+            "all",
+            "no"
+          ],
+          "enumDescriptions": [
+            "GitHub Copilot Chat",
+            "Cline (Claude Dev) Chat",
+            "Claude Chat",
+            "Send to all available AI assistants",
+            "Do not send to any AI assistant"
+          ],
+          "description": "Select which AI chat assistant to send the spin results to."
         }
       }
     }

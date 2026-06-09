@@ -37,7 +37,9 @@
             attempts++;
         }
 
-        if (hue === undefined) hue = Math.floor(Math.random() * 360);
+        if (hue === undefined) { 
+            hue = Math.floor(Math.random() * 360);
+        }
 
         return `hsl(${hue}, 85%, 55%)`;
     }
@@ -104,7 +106,7 @@
     }
 
     function renderWheel() {
-        if (!validConfig || options.length === 0) return;
+        if (!validConfig || options.length === 0) { return; }
 
         wheelInner.innerHTML = '';
 
@@ -136,7 +138,7 @@
     }
 
     function spin() {
-        if (!validConfig) return;
+        if (!validConfig) { return; }
 
         spinBtn.disabled = true;
         wheelOptionsInput.disabled = true;
@@ -144,7 +146,7 @@
         resultDisplay.textContent = '';
 
         const randomDegrees = Math.floor(Math.random() * 360);
-        const extraSpins = 360 * 5;
+        const extraSpins = 360 * (Math.floor(Math.random() * 3) + 4);
         const totalSpin = extraSpins + randomDegrees;
 
         currentRotation += totalSpin;

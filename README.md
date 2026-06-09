@@ -26,9 +26,11 @@ A lightweight VS Code extension that adds an interactive "Spin the Wheel" to the
 
 ## Extension Settings
 
-This extension contributes the following setting:
+This extension contributes the following settings:
 
 - `spinTheWheel.enableConfetti`: Toggle the big celebration screen with falling canvas confetti in the center of the editor (default: `true`).
+- `spinTheWheel.confettiScreenCloseTimeout`: Timeout in seconds before the confetti celebration window is closed automatically. If set to `null`, `0`, or not defined, the window will remain open (default: `null`).
+- `spinTheWheel.targetAI`: Select which AI chat assistant to send the spin results to. Options: `"copilot"`, `"cline"`, `"claude"`, `"all"`, or `"no"` (default: `"copilot"`).
 
 ## Development & Packaging
 

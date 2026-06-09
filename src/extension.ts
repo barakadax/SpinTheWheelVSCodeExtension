@@ -65,25 +65,37 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 						this.showConfettiPanel(result);
 					}
 
-					const claudeExtension = vscode.extensions.getExtension('anthropic.claude-code') || vscode.extensions.getExtension('anthropic.claude');
-					if (claudeExtension) {
-						const sentToClaude = await this.sendQueryToClaude(queryToSend);
-						if (sentToClaude) {
-							vscode.window.showInformationMessage("Spin result sent to Claude!");
+					const targetAI = config.get<string>('targetAI', 'copilot');
+
+					if (targetAI === 'all' || targetAI === 'claude') {
+						const claudeExtension = vscode.extensions.getExtension('anthropic.claude-code') || vscode.extensions.getExtension('anthropic.claude');
+						if (claudeExtension) {
+							const sentToClaude = await this.sendQueryToClaude(queryToSend);
+							if (sentToClaude) {
+								vscode.window.showInformationMessage("Spin result sent to Claude!");
+							}
+						} else if (targetAI === 'claude') {
+							vscode.window.showWarningMessage("Claude extension is not installed/enabled.");
 						}
 					}
 
-					const clineExtension = vscode.extensions.getExtension('saoudrizwan.claude-dev');
-					if (clineExtension) {
-						const sentToCline = await this.sendQueryToCline(queryToSend);
-						if (sentToCline) {
-							vscode.window.showInformationMessage("Spin result sent to CLine!");
+					if (targetAI === 'all' || targetAI === 'cline') {
+						const clineExtension = vscode.extensions.getExtension('saoudrizwan.claude-dev');
+						if (clineExtension) {
+							const sentToCline = await this.sendQueryToCline(queryToSend);
+							if (sentToCline) {
+								vscode.window.showInformationMessage("Spin result sent to CLine!");
+							}
+						} else if (targetAI === 'cline') {
+							vscode.window.showWarningMessage("Cline extension is not installed/enabled.");
 						}
 					}
 
-					const sentToCopilot = await this.sendQueryToCopilot(queryToSend);
-					if (sentToCopilot) {
-						vscode.window.showInformationMessage("Spin result sent to Copilot!");
+					if (targetAI === 'all' || targetAI === 'copilot') {
+						const sentToCopilot = await this.sendQueryToCopilot(queryToSend);
+						if (sentToCopilot) {
+							vscode.window.showInformationMessage("Spin result sent to Copilot!");
+						}
 					}
 				}
 			}
@@ -173,11 +185,16 @@ class SpinTheWheelViewProvider implements vscode.WebviewViewProvider {
 			panel.webview.html = `<h1>Winner: ${winner}</h1>`;
 		}
 
-		setTimeout(() => {
-			if (!isDisposed) {
-				panel.dispose();
-			}
-		}, 3000);
+		const config = vscode.workspace.getConfiguration('spinTheWheel');
+		const timeout = config.get<number | null | undefined>('confettiScreenCloseTimeout', null);
+
+		if (timeout !== null && timeout !== undefined && timeout > 0) {
+			setTimeout(() => {
+				if (!isDisposed) {
+					panel.dispose();
+				}
+			}, timeout * 1000);
+		}
 	}
 }
 
